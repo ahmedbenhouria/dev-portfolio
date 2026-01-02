@@ -1,65 +1,90 @@
-import Image from "next/image";
+'use client'
 
-export default function Home() {
+import { useEffect, useRef, useState } from 'react'
+import { SplitText } from 'gsap/all'
+import gsap from 'gsap'
+import { AnimatePresence, useScroll } from 'framer-motion'
+import ReactLenis from 'lenis/react'
+import Navbar from '@/components/Header/Navbar'
+import Preloader from './components/Preloader'
+import Hero from '@/components/Landing'
+import Services from '@/components/Services'
+import Portfolio from '@/components/Portfolio'
+import About from '@/components/About'
+
+gsap.registerPlugin(SplitText)
+
+export default function App() {
+  const triggerRef = useRef<HTMLDivElement | null>(null)
+
+  const { scrollYProgress } = useScroll({
+    target: triggerRef,
+    offset: ['start end', 'start start']
+  })
+  const [isLoading, setIsLoading] = useState(true)
+
+  const [minTimeElapsed, setMinTimeElapsed] = useState(false)
+
+  useEffect(() => {
+    // Wait minimum 2 seconds before allowing preloader to hide
+    const timer = setTimeout(() => {
+      setMinTimeElapsed(true)
+      window.scrollTo(0, 0)
+      document.body.style.cursor = 'default'
+    }, 2000)
+
+    return () => clearTimeout(timer)
+  }, [])
+
+  useEffect(() => {
+    // Only start tracking scroll after minimum time has elapsed
+    if (!minTimeElapsed) return
+
+    const handleScroll = () => {
+      const scrollX = window.scrollX || window.pageXOffset
+      const scrollY = window.scrollY || window.pageYOffset
+
+      // Hide preloader only when we've reached 0,0 AND min time has passed
+      if (scrollX === 0 && scrollY === 0) {
+        setIsLoading(false)
+      }
+    }
+
+    // Add scroll listener
+    window.addEventListener('scroll', handleScroll)
+
+    // Check initial position immediately
+    handleScroll()
+
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [minTimeElapsed])
+
+  // Lenis options: increase lerp to reduce micro-updates; check your Lenis version for exact option names
+  const lenisOptions = { smooth: true, lerp: 0.12 } // coarser interpolation for smoother updates
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
-  );
+    <ReactLenis root className='bg-[#DDDED7]'>
+      <AnimatePresence mode='wait'>
+        {isLoading && <Preloader />}
+      </AnimatePresence>
+      <Navbar isLoading={isLoading} />
+
+      {/* Hero reacts to scroll */}
+      <Hero scrollProgress={scrollYProgress} isLoading={isLoading} />
+
+      {/* This is the trigger */}
+      <div ref={triggerRef}>
+        <Services scrollYProgress={scrollYProgress} />
+      </div>
+      <Portfolio />
+
+      <About />
+
+      <div className='relative z-30 bg-indigo-500 p-20'>
+        <h3 className='text-center text-3xl font-bold text-white'>
+          More Content Below
+        </h3>
+      </div>
+    </ReactLenis>
+  )
 }

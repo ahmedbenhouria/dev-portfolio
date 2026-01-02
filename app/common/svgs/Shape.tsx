@@ -1,0 +1,23 @@
+// components/ArrowIcon.tsx
+import React from 'react'
+
+const Shape: React.FC = () => {
+  return (
+    <svg
+      width='170'
+      height='170'
+      viewBox='0 0 170 173'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+    >
+      <path
+        d='M64.4737 35.5C64.4737 52.0104 51.2779 65.3947 35 65.3947C18.7221 65.3947 5.52631 52.0104 5.52631 35.5C5.52632 18.9896 18.7221 5.60525 35 5.60526C51.2779 5.60526 64.4737 18.9896 64.4737 35.5Z'
+        fill='#928F89'
+      />
+      <path d='M73.5 104L45.5 173H5L73.5 104Z' fill='#6C645D' />
+      <path d='M170 5L74.5 103L115.5 5H170Z' fill='#6C645D' />
+    </svg>
+  )
+}
+
+export default Shape
