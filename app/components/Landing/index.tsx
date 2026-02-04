@@ -22,7 +22,7 @@ const CustomButton = () => {
       data-cal-namespace='project-intro-call'
       data-cal-link='ahmed-ben-houria-h4fkio/project-intro-call'
       data-cal-config='{"layout":"month_view"}'
-      className='group relative w-fit cursor-pointer overflow-hidden rounded-4xl bg-[#141516] px-7 py-[15px] text-[17px] font-medium tracking-wide text-white transition-transform duration-700 ease-out will-change-transform selection:text-white hover:scale-x-[1.02] hover:ease-[cubic-bezier(.34,5.56,.64,1)]'
+      className='group relative w-full cursor-pointer overflow-hidden rounded-2xl bg-[#141516] px-5 py-3 text-base font-medium tracking-wide text-white transition-transform duration-700 ease-out will-change-transform selection:text-white hover:scale-x-[1.02] hover:ease-[cubic-bezier(.34,5.56,.64,1)] sm:w-fit sm:rounded-4xl sm:px-6 sm:py-[15px] sm:text-[17px] md:px-7'
     >
       <span
         data-text='Invert Button'
@@ -160,26 +160,27 @@ export default function Index({
             animate={shouldAnimate ? 'visible' : 'hidden'}
             className='grid grid-cols-1 gap-y-6 sm:mt-12 sm:gap-y-8 lg:grid-cols-12'
           >
-            {/* TITLE */}
-            <h1 className='title mask manrope col-span-full hidden justify-center overflow-hidden text-center text-5xl font-extrabold tracking-tighter text-[#3C3933] sm:hidden sm:text-6xl md:text-7xl lg:inline-block lg:text-[133px]'>
+            {/* DESKTOP TITLE - Only shown on large screens */}
+            <h1 className='title mask manrope col-span-full hidden justify-center overflow-hidden text-center text-5xl font-extrabold tracking-tighter text-[#3C3933] sm:text-6xl md:text-7xl lg:inline-block lg:text-[133px]'>
               AHMED BEN HOURIA
             </h1>
+
             {/* ════════════════════════════════════════════
                 MOBILE & TABLET LAYOUT  (< lg)
                 Title + Description LEFT | Socials RIGHT
                 ════════════════════════════════════════════ */}
-            <div className='col-span-full m-3 mt-4 flex min-h-screen flex-col justify-center gap-6 sm:gap-8 lg:hidden'>
+            <div className='col-span-full flex min-h-screen flex-col justify-center gap-4 px-2 py-6 sm:gap-6 sm:px-4 sm:py-8 md:gap-8 md:px-6 lg:hidden'>
               {/* Row: text-block (left) + social icons (right) */}
-              <div className='flex w-full items-start justify-between gap-4'>
-                {/* LEFT — Location + Description */}
-                <div className='flex flex-col items-start gap-5'>
+              <div className='flex w-full items-start justify-between gap-3 sm:gap-4'>
+                {/* LEFT — Title + Description */}
+                <div className='flex flex-1 flex-col items-start gap-3 sm:gap-4 md:gap-5'>
                   {/* TITLE */}
-                  <h1 className='title mask manrope inline-block overflow-hidden text-3xl font-bold tracking-tight text-[#3C3933]'>
+                  <h1 className='title mask manrope inline-block overflow-hidden text-2xl leading-tight font-bold tracking-tight text-[#3C3933] sm:text-3xl md:text-4xl'>
                     Mobile Application Developer
                   </h1>
 
                   {/* Description — left-aligned */}
-                  <p className='max-w-[35ch] text-left text-[16px] leading-[1.4] font-[400] text-[#6D6660]'>
+                  <p className='font-400 max-w-[35ch] text-left text-[15px] leading-[1.5] text-[#6D6660] sm:max-w-[35ch] sm:text-base sm:leading-[1.4] md:text-[16px]'>
                     {descriptionMobile.split(' ').map((word, index) => (
                       <span key={index} className='mask'>
                         <motion.span
@@ -196,7 +197,7 @@ export default function Index({
                 </div>
 
                 {/* RIGHT — Vertical social icons */}
-                <div className='flex shrink-0 flex-col items-center gap-7 pt-1'>
+                <div className='flex shrink-0 flex-col items-center gap-4 pt-1 sm:gap-5 md:gap-7'>
                   {socials.map(({ icon: Icon, href, label }, i) => (
                     <motion.a
                       key={label}
@@ -216,10 +217,12 @@ export default function Index({
                           }
                         }
                       }}
-                      className='text-[#3C3933] transition-colors duration-300 hover:text-[#3C3933]'
+                      className='text-[#3C3933] transition-all duration-300 hover:scale-110 hover:text-[#6C645D]'
                       whileTap={{ scale: 0.85 }}
                     >
-                      <Icon />
+                      <div className='h-5 w-5 sm:h-6 sm:w-6'>
+                        <Icon />
+                      </div>
                     </motion.a>
                   ))}
                 </div>
@@ -230,7 +233,7 @@ export default function Index({
                 variants={portraitReveal}
                 initial='initial'
                 animate={shouldAnimate ? 'open' : 'initial'}
-                className='mt-3 aspect-4/5 w-full overflow-hidden rounded-lg'
+                className='mt-3 aspect-4/5 max-h-[50vh] w-full overflow-hidden rounded-lg sm:aspect-16/20 sm:max-h-none sm:rounded-xl'
               >
                 <motion.img
                   src='/portrait-img.png'
@@ -247,14 +250,14 @@ export default function Index({
                 initial='initial'
                 animate={!isLoading ? 'open' : 'initial'}
                 variants={fadeInUp}
-                className='self-center text-center text-[11.5px] font-normal tracking-wide text-[#87847f] uppercase'
+                className='self-center text-center text-[10px] font-normal tracking-wide text-[#87847f] uppercase sm:text-[11.5px]'
               >
                 (Scroll for more &#8595;)
               </motion.p>
             </div>
 
             {/* ════════════════════════════════════════════
-                DESKTOP LAYOUT (≥ lg) — unchanged
+                DESKTOP LAYOUT (≥ lg)
                 ════════════════════════════════════════════ */}
             <div className='hidden lg:contents'>
               {/* LEFT — portrait */}
