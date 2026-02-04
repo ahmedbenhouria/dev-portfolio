@@ -1,18 +1,19 @@
 'use client'
 
 import { useRef, useState, useEffect, useLayoutEffect } from 'react'
-import { motion, AnimatePresence, useAnimation } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import gsap from 'gsap'
 import { Motion3DLabel } from './Motion3DLabel'
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
+import { getCalApi } from '@calcom/embed-react'
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin)
 
 const navItems = [
   { label: 'SERVICES', href: '#services' },
-  { label: 'PORTFOLIO', href: '#portfolio' },
+  { label: 'WORKS', href: '#works' },
   { label: 'ABOUT', href: '#about' },
   { label: 'CONTACT', href: '#contact' }
 ]
@@ -27,14 +28,21 @@ const Navbar = ({ isLoading }: { isLoading: boolean }) => {
     const targetPosition = target.getBoundingClientRect().top + window.scrollY
 
     gsap.to(window, {
-      duration: 0.2, // Longer duration for smoother experience
+      duration: 0.2,
       scrollTo: {
         y: targetPosition,
-        autoKill: false // Prevent interruption
+        autoKill: false
       },
-      ease: 'power2.inOut' // Smoother easing
+      ease: 'power2.inOut'
     })
   }
+
+  useEffect(() => {
+    ;(async function () {
+      const cal = await getCalApi({ namespace: 'project-intro-call' })
+      cal('ui', { hideEventTypeDetails: false, layout: 'month_view' })
+    })()
+  }, [])
 
   useLayoutEffect(() => {
     gsap.registerPlugin(ScrollTrigger)
@@ -56,6 +64,43 @@ const Navbar = ({ isLoading }: { isLoading: boolean }) => {
         onEnterBack: () => {
           gsap.to(burger.current, {
             scale: 0,
+            duration: 0.25,
+            ease: 'power1.out'
+          })
+        }
+      }
+    })
+
+    // Hide burger on contact section
+    gsap.to(burger.current, {
+      scrollTrigger: {
+        trigger: '#contact',
+        start: 'top center',
+        end: 'bottom bottom',
+        onEnter: () => {
+          gsap.to(burger.current, {
+            scale: 0,
+            duration: 0.25,
+            ease: 'power1.out'
+          })
+        },
+        onLeave: () => {
+          gsap.to(burger.current, {
+            scale: 1,
+            duration: 0.25,
+            ease: 'power1.out'
+          })
+        },
+        onEnterBack: () => {
+          gsap.to(burger.current, {
+            scale: 0,
+            duration: 0.25,
+            ease: 'power1.out'
+          })
+        },
+        onLeaveBack: () => {
+          gsap.to(burger.current, {
+            scale: 1,
             duration: 0.25,
             ease: 'power1.out'
           })
@@ -100,8 +145,7 @@ const Navbar = ({ isLoading }: { isLoading: boolean }) => {
       y: 0,
       opacity: 1,
       transition: {
-        delay: isLoading ? 2.5 : 0,
-        duration: isLoading ? 1.2 : 0.8,
+        duration: 1.2,
         ease: [0.22, 1, 0.36, 1] as const
       }
     },
@@ -123,7 +167,7 @@ const Navbar = ({ isLoading }: { isLoading: boolean }) => {
     <>
       {/* Top Navbar */}
       <AnimatePresence>
-        {!scrolled && (
+        {!scrolled && !isLoading && (
           <motion.header
             variants={navbarVariants}
             initial='hidden'
@@ -131,15 +175,31 @@ const Navbar = ({ isLoading }: { isLoading: boolean }) => {
             exit='exit'
             className='fixed z-50 w-full selection:text-[#32297A]'
           >
-            <nav className='relative flex items-center px-6 py-10 md:px-8'>
-              {/* Centered nav items */}
+            <nav className='relative flex items-center justify-between px-4 py-6 md:px-8 md:py-10'>
+              {/* Mobile: Hamburger menu on left */}
+              <motion.button
+                onClick={() => setIsOpen(true)}
+                className='p-2 text-[#171717] md:hidden'
+                aria-label='Open menu'
+              >
+                <Menu className='h-6 w-6' />
+              </motion.button>
+
+              {/* Mobile: Brand name centered */}
+              <div className='ml-4 md:hidden'>
+                <h1 className='text-[15px] font-medium tracking-wide text-[#171717]'>
+                  AHMED BEN HOURIA
+                </h1>
+              </div>
+
+              {/* Desktop: Centered nav items */}
               <ul className='absolute left-1/2 hidden -translate-x-1/2 items-center gap-3 md:flex'>
                 {navItems.map(item => (
                   <li key={item.href}>
                     <a
                       href={item.href}
                       onClick={e => {
-                        e.preventDefault
+                        e.preventDefault()
                         scrollToSection(item.href)
                       }}
                       className='group relative block px-6 text-[16px] font-semibold text-[#171717] transition-colors hover:text-[#171717ad]'
@@ -150,15 +210,16 @@ const Navbar = ({ isLoading }: { isLoading: boolean }) => {
                 ))}
               </ul>
 
-              {/* Right side (mobile menu button) */}
-              <div className='ml-auto flex items-center gap-4'>
-                <motion.button
-                  onClick={() => setIsOpen(true)}
-                  className='p-2 text-[#171717] md:hidden'
-                  aria-label='Open menu'
+              {/* Right side: Contact button (mobile only) */}
+              <div className='ml-auto flex items-center gap-4 md:hidden'>
+                <button
+                  data-cal-namespace='project-intro-call'
+                  data-cal-link='ahmed-ben-houria-h4fkio/project-intro-call'
+                  data-cal-config='{"layout":"month_view"}'
+                  className='rounded-full bg-[#171717] px-6 py-2 text-xs font-medium tracking-wide text-white uppercase transition-all hover:bg-[#171717e6]'
                 >
-                  <Menu className='h-6 w-6' />
-                </motion.button>
+                  Let's talk!
+                </button>
               </div>
             </nav>
           </motion.header>
@@ -188,7 +249,7 @@ const Navbar = ({ isLoading }: { isLoading: boolean }) => {
                 ease: [0.32, 0.72, 0, 1]
               }}
               onClick={() => setIsOpen(false)}
-              className='fixed inset-0 z-100 bg-black/50 backdrop-blur-sm'
+              className='fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm'
             />
 
             <motion.div
@@ -200,7 +261,7 @@ const Navbar = ({ isLoading }: { isLoading: boolean }) => {
                 duration: 0.4,
                 ease: [0.32, 0.72, 0, 1]
               }}
-              className='fixed top-0 right-0 bottom-0 z-101 w-[35%] max-w-[85vw] border-l border-white/10 bg-[#1a1a1a] shadow-2xl'
+              className='fixed top-0 right-0 bottom-0 z-[101] w-[85vw] max-w-md border-l border-white/10 bg-[#1a1a1a] shadow-2xl md:w-[35%]'
             >
               <div className='flex items-center justify-between border-b border-white/10 p-6'>
                 <motion.h2
@@ -249,7 +310,7 @@ const Navbar = ({ isLoading }: { isLoading: boolean }) => {
                       <a
                         href={item.href}
                         onClick={e => {
-                          e.preventDefault
+                          e.preventDefault()
                           setIsOpen(false)
                           scrollToSection(item.href)
                         }}

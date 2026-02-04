@@ -3,6 +3,7 @@ import { motion, MotionValue, useTransform } from 'framer-motion'
 import { useRef, useState, useLayoutEffect } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { SplitText } from 'gsap/all'
 
 const services = [
   {
@@ -49,6 +50,7 @@ export default function Services({
 }) {
   const ref = useRef<HTMLElement | null>(null)
   const containerRef = useRef<HTMLDivElement | null>(null)
+  const titleRef = useRef<HTMLHeadingElement | null>(null)
 
   const topRadius = useTransform(scrollYProgress, [0.9, 1], [30, 0])
 
@@ -194,6 +196,32 @@ export default function Services({
     }
   }, [])
 
+  useLayoutEffect(() => {
+    if (!titleRef.current) return
+
+    const titleSplit = new SplitText(titleRef.current, {
+      type: 'chars, words'
+    })
+
+    gsap.from(titleSplit.chars, {
+      yPercent: 100,
+      duration: 1.1,
+      ease: 'expo.out',
+      stagger: 0.03,
+      delay: 0.1,
+      scrollTrigger: {
+        trigger: titleRef.current,
+        start: 'top 80%',
+        toggleActions: 'play none none none',
+        once: true
+      }
+    })
+
+    return () => {
+      titleSplit.revert()
+    }
+  }, [])
+
   return (
     <section
       ref={ref}
@@ -207,13 +235,21 @@ export default function Services({
         }}
         className='sticky top-0 flex min-h-full items-center justify-center bg-[#141516]'
       >
-        <div className='mx-auto flex h-full w-full flex-col px-40'>
-          <h2 className='mt-14 text-[140px] leading-tight font-bold text-[#DDDED7] uppercase'>
+        <div className='mx-auto flex h-full w-full flex-col px-4 sm:px-6 md:px-12 lg:px-24 xl:px-40'>
+          <h2
+            ref={titleRef}
+            data-title
+            className='mask mt-12 inline-block justify-center overflow-hidden text-center text-4xl leading-tight font-bold text-[#DDDED7] uppercase sm:mt-12 sm:text-6xl md:mt-16 md:text-7xl lg:text-8xl xl:text-[140px]'
+          >
             Services Provided
           </h2>
 
-          <div ref={containerRef} className='flex-1 pt-16'>
-            <div className='flex flex-row justify-between'>
+          <div
+            ref={containerRef}
+            className='flex-1 pt-8 pb-8 sm:pt-12 md:pt-16'
+          >
+            {/* Header - Hidden on mobile, visible on tablet+ */}
+            <div className='hidden flex-row justify-between md:flex'>
               <h3 className='translateX-[2px] pb-1 text-[11px] leading-8 font-[500] tracking-wide text-[#DDDED7]/70 uppercase transition-all duration-200'>
                 Service Name
               </h3>
@@ -221,6 +257,8 @@ export default function Services({
                 Click to get more info
               </h3>
             </div>
+
+            {/* Top border line */}
             <div className='pointer-events-none h-[1.8px] w-full overflow-hidden'>
               <div
                 ref={el => setBorderLineRef(el, 0)}
@@ -228,6 +266,7 @@ export default function Services({
                 style={{ transform: 'scaleX(0)' }}
               />
             </div>
+
             {services.map((service, i) => {
               const isActive = isHoveredOrExpanded(service.id)
 
@@ -241,23 +280,23 @@ export default function Services({
                     onMouseEnter={() => setHoveredId(service.id)}
                     onMouseLeave={() => setHoveredId(null)}
                     onClick={() => toggleExpand(service.id)}
-                    className='group flex w-full items-center justify-between py-4 transition-all duration-200 select-none'
+                    className='group flex w-full items-center justify-between py-3 transition-all duration-200 select-none sm:py-4'
                     style={{
                       backgroundColor: isActive ? '#DDDED7' : 'transparent'
                     }}
                   >
                     <h3
-                      className='pb-1 text-[24px] leading-9 font-[500] tracking-wide transition-all duration-200'
+                      className='pr-10 pb-1 text-base leading-snug font-[500] tracking-wide transition-all duration-200 sm:text-lg sm:leading-9 md:text-xl lg:text-2xl xl:text-[24px]'
                       style={{
                         color: isActive ? '#141516' : '#DDDED7',
                         transform: isActive
-                          ? 'translateX(12px)'
+                          ? 'translateX(8px) sm:translateX(12px)'
                           : 'translateX(2px)'
                       }}
                     >
                       {service.title}
                     </h3>
-                    <div className='absolute top-2 right-2 h-7 w-7 overflow-hidden'>
+                    <div className='absolute top-1.5 right-1.5 h-6 w-6 overflow-hidden sm:top-2 sm:right-2 sm:h-7 sm:w-7'>
                       <motion.div
                         initial={false}
                         animate={{
@@ -269,7 +308,7 @@ export default function Services({
                           duration: 0.2,
                           ease: 'easeOut'
                         }}
-                        className='h-7 w-7'
+                        className='h-6 w-6 sm:h-7 sm:w-7'
                         style={{
                           color: isActive ? '#141516' : '#DDDED7'
                         }}
@@ -290,9 +329,9 @@ export default function Services({
                       marginTop: 0
                     }}
                   >
-                    <div className='pr-12 pb-6'>
+                    <div className='pr-4 pb-4 sm:pr-8 sm:pb-5 md:pr-12 md:pb-6'>
                       <p
-                        className='manrope mb-4 px-[13px] text-[24px] font-[400] transition-colors duration-200'
+                        className='manrope mb-3 px-2 text-sm leading-relaxed font-[400] transition-colors duration-200 sm:mb-4 sm:px-[13px] sm:text-base md:text-lg lg:text-xl xl:text-[24px]'
                         style={{
                           color: isActive
                             ? '#141516'
@@ -303,11 +342,11 @@ export default function Services({
                       </p>
 
                       {service.tools && (
-                        <div className='flex flex-wrap gap-3 px-[13px]'>
+                        <div className='flex flex-wrap gap-2 px-2 sm:gap-3 sm:px-[13px]'>
                           {service.tools.map(tool => (
                             <span
                               key={tool}
-                              className='rounded-2xl px-4 py-2 text-sm transition-all duration-200'
+                              className='rounded-xl px-3 py-1.5 text-xs transition-all duration-200 sm:rounded-2xl sm:px-4 sm:py-2 sm:text-sm'
                               style={{
                                 backgroundColor: isActive
                                   ? '#141516'

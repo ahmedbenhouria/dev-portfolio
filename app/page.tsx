@@ -4,13 +4,15 @@ import { useEffect, useRef, useState } from 'react'
 import { SplitText } from 'gsap/all'
 import gsap from 'gsap'
 import { AnimatePresence, useScroll } from 'framer-motion'
-import ReactLenis from 'lenis/react'
+import Lenis from 'lenis'
 import Navbar from '@/components/Header/Navbar'
 import Preloader from './components/Preloader'
 import Hero from '@/components/Landing'
 import Services from '@/components/Services'
 import Portfolio from '@/components/Portfolio'
 import About from '@/components/About'
+import Contact from '@/components/Contact'
+import Footer from '@/app/components/Contact'
 
 gsap.registerPlugin(SplitText)
 
@@ -59,11 +61,19 @@ export default function App() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [minTimeElapsed])
 
-  // Lenis options: increase lerp to reduce micro-updates; check your Lenis version for exact option names
-  const lenisOptions = { smooth: true, lerp: 0.12 } // coarser interpolation for smoother updates
+  useEffect(() => {
+    const lenis = new Lenis()
+
+    function raf(time: any) {
+      lenis.raf(time)
+      requestAnimationFrame(raf)
+    }
+
+    requestAnimationFrame(raf)
+  }, [])
 
   return (
-    <ReactLenis root className='bg-[#DDDED7]'>
+    <main className='bg-[#DDDED7]'>
       <AnimatePresence mode='wait'>
         {isLoading && <Preloader />}
       </AnimatePresence>
@@ -80,11 +90,7 @@ export default function App() {
 
       <About />
 
-      <div className='relative z-30 bg-indigo-500 p-20'>
-        <h3 className='text-center text-3xl font-bold text-white'>
-          More Content Below
-        </h3>
-      </div>
-    </ReactLenis>
+      <Contact />
+    </main>
   )
 }
