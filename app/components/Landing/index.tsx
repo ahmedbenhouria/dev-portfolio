@@ -169,91 +169,90 @@ export default function Index({
                 MOBILE & TABLET LAYOUT  (< lg)
                 Title + Description LEFT | Socials RIGHT
                 ════════════════════════════════════════════ */}
-            <div className='col-span-full flex min-h-screen flex-col justify-center gap-4 px-2 py-6 sm:gap-6 sm:px-4 sm:py-8 md:gap-8 md:px-6 lg:hidden'>
-              {/* Row: text-block (left) + social icons (right) */}
-              <div className='flex w-full items-start justify-between gap-3 sm:gap-4'>
-                {/* LEFT — Title + Description */}
-                <div className='flex flex-1 flex-col items-start gap-3 sm:gap-4 md:gap-5'>
-                  {/* TITLE */}
-                  <h1 className='title mask manrope inline-block overflow-hidden text-2xl leading-tight font-bold tracking-tight text-[#3C3933] sm:text-3xl md:text-4xl'>
-                    Mobile Application Developer
-                  </h1>
+            <div className='col-span-full flex h-screen flex-col overflow-hidden px-3 py-3 sm:px-4 sm:py-4 md:px-6 md:py-5 lg:hidden'>
+              {/* Content area */}
+              <div className='mt-3 shrink-0'>
+                {/* Row: text-block (left) + social icons (right) */}
+                <div className='flex w-full items-start justify-between gap-3 sm:gap-4'>
+                  {/* LEFT — Title + Description */}
+                  <div className='flex flex-1 flex-col items-start gap-3 sm:gap-4 md:gap-5'>
+                    {/* TITLE */}
+                    <h1 className='title mask manrope inline-block overflow-hidden text-2xl leading-tight font-bold tracking-tight text-[#3C3933] sm:text-3xl md:text-4xl'>
+                      Mobile Application
+                      <br />
+                      Developer
+                    </h1>
 
-                  {/* Description — left-aligned */}
-                  <p className='font-400 max-w-[35ch] text-left text-[15px] leading-[1.5] text-[#6D6660] sm:max-w-[35ch] sm:text-base sm:leading-[1.4] md:text-[16px]'>
-                    {descriptionMobile.split(' ').map((word, index) => (
-                      <span key={index} className='mask'>
-                        <motion.span
-                          variants={slideUp}
-                          custom={index}
-                          initial='initial'
-                          animate={!isLoading ? 'open' : 'initial'}
-                        >
-                          {word}{' '}
-                        </motion.span>
-                      </span>
-                    ))}
-                  </p>
-                </div>
+                    {/* Description — left-aligned */}
+                    <p className='font-400 max-w-[35ch] text-left text-[15px] leading-[1.5] text-[#6D6660] sm:max-w-[35ch] sm:text-base sm:leading-[1.4] md:text-[16px]'>
+                      {descriptionMobile.split(' ').map((word, index) => (
+                        <span key={index} className='mask'>
+                          <motion.span
+                            variants={slideUp}
+                            custom={index}
+                            initial='initial'
+                            animate={!isLoading ? 'open' : 'initial'}
+                          >
+                            {word}{' '}
+                          </motion.span>
+                        </span>
+                      ))}
+                    </p>
+                  </div>
 
-                {/* RIGHT — Vertical social icons */}
-                <div className='flex shrink-0 flex-col items-center gap-4 pt-1 sm:gap-5 md:gap-7'>
-                  {socials.map(({ icon: Icon, href, label }, i) => (
-                    <motion.a
-                      key={label}
-                      href={href}
-                      aria-label={label}
-                      initial='initial'
-                      animate={shouldAnimate ? 'open' : 'initial'}
-                      variants={{
-                        initial: { opacity: 0, y: 12 },
-                        open: {
-                          opacity: 1,
-                          y: 0,
-                          transition: {
-                            delay: 0.15 * i + 0.4,
-                            duration: 0.5,
-                            ease: [0.4, 0, 0, 1]
+                  {/* RIGHT — Vertical social icons */}
+                  <div className='flex shrink-0 flex-col items-center gap-6 pt-1 sm:gap-5 md:gap-7'>
+                    {socials.map(({ icon: Icon, href, label }, i) => (
+                      <motion.a
+                        key={label}
+                        href={href}
+                        aria-label={label}
+                        initial='initial'
+                        animate={shouldAnimate ? 'open' : 'initial'}
+                        variants={{
+                          initial: { opacity: 0, y: 12 },
+                          open: {
+                            opacity: 1,
+                            y: 0,
+                            transition: {
+                              delay: 0.15 * i + 0.4,
+                              duration: 0.5,
+                              ease: [0.4, 0, 0, 1]
+                            }
                           }
-                        }
-                      }}
-                      className='text-[#3C3933] transition-all duration-300 hover:scale-110 hover:text-[#6C645D]'
-                      whileTap={{ scale: 0.85 }}
-                    >
-                      <div className='h-5 w-5 sm:h-6 sm:w-6'>
-                        <Icon />
-                      </div>
-                    </motion.a>
-                  ))}
+                        }}
+                        className='text-[#3C3933] transition-all duration-300 hover:scale-110 hover:text-[#6C645D]'
+                        whileTap={{ scale: 0.85 }}
+                      >
+                        <div className='h-5 w-5 sm:h-6 sm:w-6'>
+                          <Icon />
+                        </div>
+                      </motion.a>
+                    ))}
+                  </div>
                 </div>
               </div>
 
-              {/* Portrait */}
-              <motion.div
-                variants={portraitReveal}
-                initial='initial'
-                animate={shouldAnimate ? 'open' : 'initial'}
-                className='mt-3 aspect-4/5 max-h-[50vh] w-full overflow-hidden rounded-lg sm:aspect-16/20 sm:max-h-none sm:rounded-xl'
-              >
-                <motion.img
-                  src='/portrait-img.png'
-                  alt='Portrait'
-                  className='h-full w-full object-cover'
-                  variants={imageScale}
+              {/* Image - constrained height with spacing */}
+              <div className='mt-7 flex max-h-[58vh] min-h-0 flex-1 flex-col gap-2 sm:gap-3'>
+                <motion.div
+                  variants={portraitReveal}
                   initial='initial'
                   animate={shouldAnimate ? 'open' : 'initial'}
-                />
-              </motion.div>
-
-              {/* Scroll indicator */}
-              <motion.p
-                initial='initial'
-                animate={!isLoading ? 'open' : 'initial'}
-                variants={fadeInUp}
-                className='self-center text-center text-[10px] font-normal tracking-wide text-[#87847f] uppercase sm:text-[11.5px]'
-              >
-                (Scroll for more &#8595;)
-              </motion.p>
+                  className='w-full flex-1 overflow-hidden rounded-lg sm:rounded-xl'
+                >
+                  <motion.img
+                    src='/portrait-img.png'
+                    alt='Portrait'
+                    className='h-full w-full object-cover'
+                    variants={imageScale}
+                    initial='initial'
+                    animate={shouldAnimate ? 'open' : 'initial'}
+                  />
+                </motion.div>
+                {/* Bottom spacing */}
+                <div className='h-2 shrink-0 sm:h-3'></div>
+              </div>
             </div>
 
             {/* ════════════════════════════════════════════
@@ -306,7 +305,7 @@ export default function Index({
                 <div className='flex flex-col justify-between px-8'>
                   <div className='flex flex-col gap-y-10'>
                     {/* Description */}
-                    <p className='max-w-xl pt-3 text-[23px] font-[400] text-[#6D6660]'>
+                    <p className='font-400 max-w-xl pt-3 text-[23px] text-[#6D6660]'>
                       {description.split(' ').map((word, index) => (
                         <span key={index} className='mask'>
                           <motion.span

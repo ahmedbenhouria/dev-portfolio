@@ -32,4 +32,27 @@
             margin-right: 10px;
         }
     }
+
+    /* Mobile optimization */
+    @media (max-width: 768px) {
+        p{
+            font-size: 28px;
+            span{
+                width: 8px;
+                height: 8px;
+                margin-right: 8px;
+            }
+        }
+    }
+
+    @media (max-width: 480px) {
+        p{
+            font-size: 20px;
+            span{
+                width: 6px;
+                height: 6px;
+                margin-right: 6px;
+            }
+        }
+    }
 }
