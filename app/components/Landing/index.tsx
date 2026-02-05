@@ -150,7 +150,7 @@ export default function Index({
   return (
     <section
       id='home'
-      className='sticky top-0 z-10 h-screen overflow-hidden bg-[#DDDED7] selection:text-[#32297A]'
+      className='sticky top-0 z-20 h-screen overflow-hidden bg-[#DDDED7] selection:text-[#32297A] md:z-10'
     >
       <div className='relative z-10 grid h-full w-full place-items-center px-4 sm:px-6 md:px-12 lg:px-20 xl:px-28'>
         <motion.div style={{ scale, opacity, y }} className='w-full'>
@@ -169,9 +169,9 @@ export default function Index({
                 MOBILE & TABLET LAYOUT  (< lg)
                 Title + Description LEFT | Socials RIGHT
                 ════════════════════════════════════════════ */}
-            <div className='col-span-full flex h-screen flex-col overflow-hidden px-3 py-3 sm:px-4 sm:py-4 md:px-6 md:py-5 lg:hidden'>
+            <div className='col-span-full flex flex-col overflow-hidden px-3 py-3 pt-16 sm:px-4 sm:py-4 sm:pt-20 md:px-6 md:py-5 md:pt-24 lg:hidden'>
               {/* Content area */}
-              <div className='mt-3 shrink-0'>
+              <div className='shrink-0'>
                 {/* Row: text-block (left) + social icons (right) */}
                 <div className='flex w-full items-start justify-between gap-3 sm:gap-4'>
                   {/* LEFT — Title + Description */}
