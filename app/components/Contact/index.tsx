@@ -1,17 +1,9 @@
-import { useEffect } from 'react'
-import { getCalApi } from '@calcom/embed-react'
+import React, { useState, useEffect } from 'react'
 
 export default function Index() {
-  useEffect(() => {
-    ;(async function () {
-      const cal = await getCalApi({ namespace: 'project-intro-call' })
-      cal('ui', { hideEventTypeDetails: false, layout: 'month_view' })
-    })()
-  }, [])
-
   return (
     <section
-      className='relative z-11 h-[500px] sm:h-[600px] md:h-[710px]'
+      className='relative z-50 h-[500px] sm:h-[600px] md:h-[710px]'
       id='contact'
       style={{ clipPath: 'polygon(0% 0, 100% 0%, 100% 100%, 0 100%)' }}
     >
@@ -64,10 +56,8 @@ export default function Index() {
 
               {/* CTA Button with glow effect */}
               <div className='flex justify-center px-4'>
-                <button
-                  data-cal-namespace='project-intro-call'
-                  data-cal-link='ahmed-ben-houria-h4fkio/project-intro-call'
-                  data-cal-config='{"layout":"month_view"}'
+                <a
+                  href='#book-call'
                   className='group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-black px-6 py-3 text-base font-bold text-white transition-all duration-500 hover:scale-105 hover:shadow-[0_0_40px_rgba(0,0,0,0.3)] sm:gap-3 sm:px-8 sm:py-4 sm:text-lg md:px-10 md:py-5 md:text-xl'
                 >
                   <span className='relative z-10'>BOOK A CALL</span>
@@ -85,7 +75,7 @@ export default function Index() {
                     />
                   </svg>
                   <div className='absolute inset-0 -z-0 bg-gradient-to-r from-gray-900 to-gray-800 opacity-0 transition-opacity duration-300 group-hover:opacity-100' />
-                </button>
+                </a>
               </div>
             </div>
 

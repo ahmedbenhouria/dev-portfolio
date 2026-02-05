@@ -25,7 +25,11 @@ const Navbar = ({ isLoading }: { isLoading: boolean }) => {
     const target = document.querySelector(href)
     if (!target) return
 
-    const targetPosition = target.getBoundingClientRect().top + window.scrollY
+    const header = document.querySelector('header') as HTMLElement | null
+    const headerHeight = header?.offsetHeight ?? 0
+
+    const targetPosition =
+      target.getBoundingClientRect().top + window.scrollY - headerHeight
 
     gsap.to(window, {
       duration: 0.2,
@@ -202,7 +206,7 @@ const Navbar = ({ isLoading }: { isLoading: boolean }) => {
             initial='hidden'
             animate='visible'
             exit='exit'
-            className='fixed top-0 z-50 w-full selection:text-[#32297A] md:z-40'
+            className='fixed top-0 z-40 w-full selection:text-[#32297A] md:z-40'
           >
             <nav
               className={`relative flex items-center justify-between border-b px-4 py-2 transition-all duration-300 md:border-b-0 md:bg-transparent md:px-8 md:py-10 ${
