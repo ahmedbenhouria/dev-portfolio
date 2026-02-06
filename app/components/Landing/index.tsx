@@ -154,12 +154,12 @@ export default function Index({
           ════════════════════════════════════════════ */}
       <section
         id='home'
-        className='relative z-20 min-h-screen bg-[#DDDED7] selection:text-[#32297A] md:z-10 lg:hidden'
+        className='relative z-20 h-[100dvh] overflow-hidden bg-[#DDDED7] selection:text-[#32297A] md:z-10 lg:hidden'
       >
-        <div className='relative z-10 flex min-h-screen flex-col px-6 pt-16 pb-6 sm:px-6 sm:pt-20 sm:pb-8 md:px-12 md:pt-24 md:pb-10'>
+        <div className='relative z-10 flex h-full flex-col px-6 pt-16 pb-6 sm:px-6 sm:pt-20 sm:pb-8 md:px-12 md:pt-24 md:pb-10'>
           <motion.div 
             style={{ scale, opacity, y }} 
-            className='mx-auto w-full max-w-2xl flex-1'
+            className='mx-auto flex h-full w-full max-w-2xl flex-col'
           >
             <motion.div
               variants={containerVariants}
@@ -168,7 +168,7 @@ export default function Index({
               className='flex h-full flex-col gap-4 sm:gap-6 md:gap-8'
             >
               {/* Content area */}
-              <div className='grid grid-cols-[1fr_auto] items-start gap-3 sm:gap-4'>
+              <div className='grid flex-shrink-0 grid-cols-[1fr_auto] items-start gap-3 sm:gap-4'>
                 {/* Title + Description */}
                 <div className='space-y-3 sm:space-y-3 md:space-y-4'>
                   <h1 className='title mask manrope text-[20px] leading-tight font-bold tracking-tight text-[#3C3933] sm:text-2xl md:text-3xl'>
@@ -225,7 +225,7 @@ export default function Index({
               </div>
 
               {/* Image - takes remaining space */}
-              <div className='relative flex-1 overflow-hidden rounded-lg sm:rounded-xl'>
+              <div className='relative min-h-0 flex-1 overflow-hidden rounded-lg sm:rounded-xl'>
                 <motion.div
                   variants={portraitReveal}
                   initial='initial'
