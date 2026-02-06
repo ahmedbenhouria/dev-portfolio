@@ -156,17 +156,41 @@ const Navbar = ({ isLoading }: { isLoading: boolean }) => {
     // Add padding to account for fixed navbar on mobile
     const updatePadding = () => {
       const navbar = document.querySelector('header')
-      if (navbar && isMobile) {
+      if (navbar && isMobile && mounted) {
         const navHeight = navbar.offsetHeight
+        // Use CSS custom property for dynamic navbar height
+        document.documentElement.style.setProperty('--navbar-height', `${navHeight}px`)
+        // Also set body padding as fallback
         document.body.style.paddingTop = `${navHeight}px`
       } else {
+        document.documentElement.style.setProperty('--navbar-height', '0px')
         document.body.style.paddingTop = '0'
       }
     }
 
-    updatePadding()
+    if (mounted) {
+      // Use requestAnimationFrame to ensure DOM is ready
+      requestAnimationFrame(() => {
+        updatePadding()
+        // Also update after a short delay to catch any layout shifts
+        setTimeout(updatePadding, 100)
+      })
+    }
+
     window.addEventListener('resize', updatePadding)
-    return () => window.removeEventListener('resize', updatePadding)
+    // Update when navbar visibility changes
+    const observer = new MutationObserver(updatePadding)
+    if (mounted) {
+      const navbar = document.querySelector('header')
+      if (navbar) {
+        observer.observe(navbar, { attributes: true, childList: true, subtree: true })
+      }
+    }
+
+    return () => {
+      window.removeEventListener('resize', updatePadding)
+      observer.disconnect()
+    }
   }, [mounted, isMobile])
 
   const navbarVariants = {

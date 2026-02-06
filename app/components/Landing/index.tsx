@@ -50,8 +50,8 @@ const CustomButton = () => {
   /* ─── Vertical Social Icons (shared SVGs) ─── */
 }
 const iconProps = {
-  width: 20,
-  height: 20,
+  width: 18,
+  height: 18,
   viewBox: '0 0 24 24',
   fill: 'none',
   stroke: 'currentColor',
@@ -147,6 +147,63 @@ export default function Index({
     })()
   }, [])
 
+  // Calculate and update navbar height for mobile
+  useEffect(() => {
+    const updateNavbarHeight = () => {
+      if (window.innerWidth >= 1024) {
+        document.documentElement.style.setProperty('--navbar-height', '0px')
+        return
+      }
+
+      // Wait for navbar to be visible (after loading)
+      const navbar = document.querySelector('header')
+      if (navbar && navbar.offsetHeight > 0) {
+        const navHeight = navbar.offsetHeight
+        document.documentElement.style.setProperty('--navbar-height', `${navHeight}px`)
+      } else {
+        // Fallback: calculate based on typical mobile navbar height
+        const defaultHeight = 64
+        document.documentElement.style.setProperty('--navbar-height', `${defaultHeight}px`)
+      }
+    }
+
+    // Update when loading finishes
+    if (!isLoading) {
+      updateNavbarHeight()
+    }
+
+    // Update on resize with debounce
+    let resizeTimer: NodeJS.Timeout
+    const handleResize = () => {
+      clearTimeout(resizeTimer)
+      resizeTimer = setTimeout(updateNavbarHeight, 100)
+    }
+
+    window.addEventListener('resize', handleResize)
+    
+    // Update when navbar visibility changes
+    const observer = new MutationObserver(() => {
+      updateNavbarHeight()
+    })
+    
+    const navbar = document.querySelector('header')
+    if (navbar) {
+      observer.observe(navbar, { attributes: true, childList: true, subtree: true, attributeFilter: ['class', 'style'] })
+    }
+
+    // Update after delays to catch layout shifts
+    const timeoutId1 = setTimeout(updateNavbarHeight, 100)
+    const timeoutId2 = setTimeout(updateNavbarHeight, 500)
+
+    return () => {
+      window.removeEventListener('resize', handleResize)
+      observer.disconnect()
+      clearTimeout(timeoutId1)
+      clearTimeout(timeoutId2)
+      clearTimeout(resizeTimer)
+    }
+  }, [isLoading])
+
   return (
     <>
       {/* ════════════════════════════════════════════
@@ -155,100 +212,113 @@ export default function Index({
           ════════════════════════════════════════════ */}
       <section
         id='home'
-        className='relative z-20 bg-[#DDDED7] pt-10 selection:text-[#32297A] md:z-10 lg:hidden'
+        className='relative z-20 h-screen bg-[#DDDED7] selection:text-[#32297A] md:z-10 lg:hidden'
       >
-        <div className='relative z-10 grid w-full place-items-center px-4 sm:px-6 md:px-12 lg:px-20 xl:px-28'>
-          <motion.div style={{ scale, opacity, y }} className='w-full'>
+        <div 
+          className='relative z-10 flex h-full flex-col px-6 sm:px-6 md:px-12'
+          style={{ height: '100vh' }}
+        >
+          {/* Navbar spacer - takes up space in flex layout */}
+          <div 
+            style={{ height: 'var(--navbar-height, 64px)', minHeight: 'var(--navbar-height, 64px)', flexShrink: 0 }}
+            aria-hidden='true'
+          />
+          <motion.div 
+            style={{ 
+              scale, 
+              opacity, 
+              y,
+              flex: '1 1 0',
+              width: '100%',
+              maxWidth: '42rem',
+              margin: '0 auto',
+              display: 'flex',
+              alignItems: 'stretch',
+              minHeight: 0
+            }} 
+            className='py-6 sm:py-8 md:py-10'
+          >
             <motion.div
               variants={containerVariants}
               initial='hidden'
               animate={shouldAnimate ? 'visible' : 'hidden'}
-              className='grid grid-cols-1 gap-y-6 sm:mt-12 sm:gap-y-8'
+              className='grid w-full h-full grid-rows-[auto_1fr] gap-4 sm:gap-6 md:gap-8'
+              style={{ minHeight: 0, height: '100%' }}
             >
-              <div className='col-span-full flex min-h-screen flex-col justify-center px-3 py-3 sm:px-4 sm:py-4 md:px-6 md:py-5'>
-                {/* Content area */}
-                <div className='shrink-0'>
-                  {/* Row: text-block (left) + social icons (right) */}
-                  <div className='flex w-full items-start justify-between gap-3 sm:gap-4'>
-                    {/* LEFT — Title + Description */}
-                    <div className='flex flex-1 flex-col items-start gap-3 sm:gap-4 md:gap-5'>
-                      {/* TITLE */}
-                      <h1 className='title mask manrope inline-block overflow-hidden text-2xl leading-tight font-bold tracking-tight text-[#3C3933] sm:text-3xl md:text-4xl'>
-                        Mobile Application
-                        <br />
-                        Developer
-                      </h1>
-
-                      {/* Description — left-aligned */}
-                      <p className='font-400 max-w-[35ch] text-left text-[15px] leading-[1.5] text-[#6D6660] sm:max-w-[35ch] sm:text-base sm:leading-[1.4] md:text-[16px]'>
-                        {descriptionMobile.split(' ').map((word, index) => (
-                          <span key={index} className='mask'>
-                            <motion.span
-                              variants={slideUp}
-                              custom={index}
-                              initial='initial'
-                              animate={!isLoading ? 'open' : 'initial'}
-                            >
-                              {word}{' '}
-                            </motion.span>
-                          </span>
-                        ))}
-                      </p>
-                    </div>
-
-                    {/* RIGHT — Vertical social icons */}
-                    <div className='flex shrink-0 flex-col items-center gap-6 pt-1 sm:gap-5 md:gap-7'>
-                      {socials.map(({ icon: Icon, href, label }, i) => (
-                        <motion.a
-                          key={label}
-                          href={href}
-                          aria-label={label}
+              {/* Content area */}
+              <div className='grid grid-cols-[1fr_auto] items-start gap-3 sm:gap-4'>
+                {/* Title + Description */}
+                <div className='space-y-3 sm:space-y-3 md:space-y-4'>
+                  <h1 className='title mask manrope text-[20px] leading-tight font-bold tracking-tight text-[#3C3933] sm:text-2xl md:text-3xl'>
+                    Mobile Application
+                    <br />
+                    Developer
+                  </h1>
+                  <p className='max-w-[82%] text-[13px] leading-normal text-[#6D6660] sm:text-[14px] md:text-base'>
+                    {descriptionMobile.split(' ').map((word, index) => (
+                      <span key={index} className='mask'>
+                        <motion.span
+                          variants={slideUp}
+                          custom={index}
                           initial='initial'
-                          animate={shouldAnimate ? 'open' : 'initial'}
-                          variants={{
-                            initial: { opacity: 0, y: 12 },
-                            open: {
-                              opacity: 1,
-                              y: 0,
-                              transition: {
-                                delay: 0.15 * i + 0.4,
-                                duration: 0.5,
-                                ease: [0.4, 0, 0, 1]
-                              }
-                            }
-                          }}
-                          className='text-[#3C3933] transition-all duration-300 hover:scale-110 hover:text-[#6C645D]'
-                          whileTap={{ scale: 0.85 }}
+                          animate={!isLoading ? 'open' : 'initial'}
                         >
-                          <div className='h-5 w-5 sm:h-6 sm:w-6'>
-                            <Icon />
-                          </div>
-                        </motion.a>
-                      ))}
-                    </div>
-                  </div>
+                          {word}{' '}
+                        </motion.span>
+                      </span>
+                    ))}
+                  </p>
                 </div>
 
-                {/* Image - constrained height with spacing */}
-                <div className='mt-7 flex max-h-[58vh] min-h-0 flex-1 flex-col gap-2 sm:gap-3'>
-                  <motion.div
-                    variants={portraitReveal}
-                    initial='initial'
-                    animate={shouldAnimate ? 'open' : 'initial'}
-                    className='w-full flex-1 overflow-hidden rounded-lg sm:rounded-xl'
-                  >
-                    <motion.img
-                      src='/portrait-img.png'
-                      alt='Portrait'
-                      className='h-full w-full object-cover'
-                      variants={imageScale}
+                {/* Social icons */}
+                <div className='grid grid-rows-4 gap-5.5 sm:gap-4'>
+                  {socials.map(({ icon: Icon, href, label }, i) => (
+                    <motion.a
+                      key={label}
+                      href={href}
+                      aria-label={label}
                       initial='initial'
                       animate={shouldAnimate ? 'open' : 'initial'}
-                    />
-                  </motion.div>
-                  {/* Bottom spacing */}
-                  <div className='h-2 shrink-0 sm:h-3'></div>
+                      variants={{
+                        initial: { opacity: 0, y: 12 },
+                        open: {
+                          opacity: 1,
+                          y: 0,
+                          transition: {
+                            delay: 0.15 * i + 0.4,
+                            duration: 0.5,
+                            ease: [0.4, 0, 0, 1]
+                          }
+                        }
+                      }}
+                      className='text-[#3C3933] transition-all duration-300 hover:scale-110 hover:text-[#6C645D]'
+                      whileTap={{ scale: 0.85 }}
+                    >
+                      <div className='h-[17px] w-[17px] sm:h-5 sm:w-5 md:h-6 md:w-6'>
+                        <Icon />
+                      </div>
+                    </motion.a>
+                  ))}
                 </div>
+              </div>
+
+              {/* Image */}
+              <div className='mt-2 relative flex min-h-0 flex-1 items-center justify-center overflow-hidden rounded-lg sm:rounded-xl'>
+                <motion.div
+                  variants={portraitReveal}
+                  initial='initial'
+                  animate={shouldAnimate ? 'open' : 'initial'}
+                  className='relative h-full w-full'
+                >
+                  <motion.img
+                    src='/portrait-img.png'
+                    alt='Portrait'
+                    className='h-full w-full object-cover'
+                    variants={imageScale}
+                    initial='initial'
+                    animate={shouldAnimate ? 'open' : 'initial'}
+                  />
+                </motion.div>
               </div>
             </motion.div>
           </motion.div>
