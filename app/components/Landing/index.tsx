@@ -168,15 +168,15 @@ export default function Index({
               className='flex h-full flex-col gap-4 sm:gap-6 md:gap-8'
             >
               {/* Content area */}
-              <div className='grid flex-shrink-0 grid-cols-[1fr_auto] items-start gap-3 sm:gap-4'>
+              <div className='mt-4 grid flex-shrink-0 grid-cols-[1fr_auto] items-start gap-3 sm:gap-4'>
                 {/* Title + Description */}
-                <div className='space-y-3 sm:space-y-3 md:space-y-4'>
-                  <h1 className='title mask manrope text-[20px] leading-tight font-bold tracking-tight text-[#3C3933] sm:text-2xl md:text-3xl'>
+                <div className='mt-1 space-y-3 sm:space-y-3 md:space-y-4'>
+                  <h1 className='title mask manrope text-[21px] leading-tight font-bold tracking-tight text-[#3C3933] sm:text-2xl md:text-3xl'>
                     Mobile Application
                     <br />
                     Developer
                   </h1>
-                  <p className='max-w-[82%] text-[13px] leading-normal text-[#6D6660] sm:text-[14px] md:text-base'>
+                  <p className='manrope max-w-[92%] text-[12px] leading-4.5 font-[500] text-[#6D6660] sm:text-[14px] md:text-base'>
                     {descriptionMobile.split(' ').map((word, index) => (
                       <span key={index} className='mask'>
                         <motion.span
@@ -225,7 +225,7 @@ export default function Index({
               </div>
 
               {/* Image - takes remaining space */}
-              <div className='relative min-h-0 flex-1 overflow-hidden rounded-lg sm:rounded-xl'>
+              <div className='mt-4 relative min-h-0 flex-1 overflow-hidden rounded-lg sm:rounded-xl'>
                 <motion.div
                   variants={portraitReveal}
                   initial='initial'

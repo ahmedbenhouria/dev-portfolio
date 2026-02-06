@@ -201,22 +201,12 @@ const Navbar = ({ isLoading }: { isLoading: boolean }) => {
               {/* Mobile: Hamburger menu on left */}
               <motion.button
                 onClick={() => setIsOpen(true)}
-                className='p-2 text-[#1b1915] md:hidden'
+                className='p-2 text-[#171717] mt-0.5 md:hidden'
                 aria-label='Open menu'
               >
                 <Menu className='h-6 w-6' />
               </motion.button>
-
-              {/* Mobile: Brand name centered */}
-              <div className='ml-4 md:hidden'>
-                <h1
-                  className={`text-[14px] font-semibold tracking-wider transition-colors duration-300 ${
-                    scrolled ? 'text-[#1b1915]' : 'text-[#1b1915]'
-                  }`}
-                >
-                  AHMED BEN HOURIA
-                </h1>
-              </div>
+             
 
               {/* Desktop: Centered nav items */}
               <ul className='absolute left-1/2 hidden -translate-x-1/2 items-center gap-3 md:flex'>
@@ -242,7 +232,7 @@ const Navbar = ({ isLoading }: { isLoading: boolean }) => {
                   data-cal-namespace='project-intro-call'
                   data-cal-link='ahmed-ben-houria-h4fkio/project-intro-call'
                   data-cal-config='{"layout":"month_view"}'
-                  className={`rounded-xl px-4 py-2 text-xs font-semibold tracking-wide uppercase transition-all duration-300 ${
+                  className={`rounded-xl px-5 py-2 text-xs font-semibold tracking-wide uppercase transition-all duration-300 ${
                     scrolled
                       ? 'bg-[#171717] text-white shadow-md hover:bg-[#171717e6]'
                       : 'bg-[#171717] text-white hover:bg-[#171717e6]'

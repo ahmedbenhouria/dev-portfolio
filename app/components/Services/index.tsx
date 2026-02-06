@@ -52,8 +52,16 @@ export default function Services({
   const containerRef = useRef<HTMLDivElement | null>(null)
   const titleRef = useRef<HTMLHeadingElement | null>(null)
 
-  const topRadius = useTransform(scrollYProgress, [0.9, 1], [30, 0])
+  const isMobile =
+  typeof window !== 'undefined' &&
+  window.matchMedia('(max-width: 768px)').matches
 
+  const topRadius = useTransform(
+    scrollYProgress,
+    [0.9, 1],
+    isMobile ? [16, 0] : [30, 0]
+  )
+  
   const [expandedId, setExpandedId] = useState<number | null>(null)
   const [hoveredId, setHoveredId] = useState<number | null>(null)
 
@@ -221,6 +229,8 @@ export default function Services({
       titleSplit.revert()
     }
   }, [])
+
+  
 
   return (
     <section
