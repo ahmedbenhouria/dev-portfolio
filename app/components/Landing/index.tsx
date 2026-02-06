@@ -147,103 +147,25 @@ export default function Index({
     })()
   }, [])
 
-  // Calculate and update navbar height for mobile
-  useEffect(() => {
-    const updateNavbarHeight = () => {
-      if (window.innerWidth >= 1024) {
-        document.documentElement.style.setProperty('--navbar-height', '0px')
-        return
-      }
-
-      // Wait for navbar to be visible (after loading)
-      const navbar = document.querySelector('header')
-      if (navbar && navbar.offsetHeight > 0) {
-        const navHeight = navbar.offsetHeight
-        document.documentElement.style.setProperty('--navbar-height', `${navHeight}px`)
-      } else {
-        // Fallback: calculate based on typical mobile navbar height
-        const defaultHeight = 64
-        document.documentElement.style.setProperty('--navbar-height', `${defaultHeight}px`)
-      }
-    }
-
-    // Update when loading finishes
-    if (!isLoading) {
-      updateNavbarHeight()
-    }
-
-    // Update on resize with debounce
-    let resizeTimer: NodeJS.Timeout
-    const handleResize = () => {
-      clearTimeout(resizeTimer)
-      resizeTimer = setTimeout(updateNavbarHeight, 100)
-    }
-
-    window.addEventListener('resize', handleResize)
-    
-    // Update when navbar visibility changes
-    const observer = new MutationObserver(() => {
-      updateNavbarHeight()
-    })
-    
-    const navbar = document.querySelector('header')
-    if (navbar) {
-      observer.observe(navbar, { attributes: true, childList: true, subtree: true, attributeFilter: ['class', 'style'] })
-    }
-
-    // Update after delays to catch layout shifts
-    const timeoutId1 = setTimeout(updateNavbarHeight, 100)
-    const timeoutId2 = setTimeout(updateNavbarHeight, 500)
-
-    return () => {
-      window.removeEventListener('resize', handleResize)
-      observer.disconnect()
-      clearTimeout(timeoutId1)
-      clearTimeout(timeoutId2)
-      clearTimeout(resizeTimer)
-    }
-  }, [isLoading])
-
   return (
     <>
       {/* ════════════════════════════════════════════
           MOBILE & TABLET SECTION  (< lg)
-          Independent from desktop
           ════════════════════════════════════════════ */}
       <section
         id='home'
-        className='relative z-20 h-screen bg-[#DDDED7] selection:text-[#32297A] md:z-10 lg:hidden'
+        className='relative z-20 min-h-screen bg-[#DDDED7] selection:text-[#32297A] md:z-10 lg:hidden'
       >
-        <div 
-          className='relative z-10 flex h-full flex-col px-6 sm:px-6 md:px-12'
-          style={{ height: '100vh' }}
-        >
-          {/* Navbar spacer - takes up space in flex layout */}
-          <div 
-            style={{ height: 'var(--navbar-height, 64px)', minHeight: 'var(--navbar-height, 64px)', flexShrink: 0 }}
-            aria-hidden='true'
-          />
+        <div className='relative z-10 flex min-h-screen flex-col px-6 pt-16 pb-6 sm:px-6 sm:pt-20 sm:pb-8 md:px-12 md:pt-24 md:pb-10'>
           <motion.div 
-            style={{ 
-              scale, 
-              opacity, 
-              y,
-              flex: '1 1 0',
-              width: '100%',
-              maxWidth: '42rem',
-              margin: '0 auto',
-              display: 'flex',
-              alignItems: 'stretch',
-              minHeight: 0
-            }} 
-            className='py-6 sm:py-8 md:py-10'
+            style={{ scale, opacity, y }} 
+            className='mx-auto w-full max-w-2xl flex-1'
           >
             <motion.div
               variants={containerVariants}
               initial='hidden'
               animate={shouldAnimate ? 'visible' : 'hidden'}
-              className='grid w-full h-full grid-rows-[auto_1fr] gap-4 sm:gap-6 md:gap-8'
-              style={{ minHeight: 0, height: '100%' }}
+              className='flex h-full flex-col gap-4 sm:gap-6 md:gap-8'
             >
               {/* Content area */}
               <div className='grid grid-cols-[1fr_auto] items-start gap-3 sm:gap-4'>
@@ -302,8 +224,8 @@ export default function Index({
                 </div>
               </div>
 
-              {/* Image */}
-              <div className='mt-2 relative flex min-h-0 flex-1 items-center justify-center overflow-hidden rounded-lg sm:rounded-xl'>
+              {/* Image - takes remaining space */}
+              <div className='relative flex-1 overflow-hidden rounded-lg sm:rounded-xl'>
                 <motion.div
                   variants={portraitReveal}
                   initial='initial'
@@ -327,7 +249,6 @@ export default function Index({
 
       {/* ════════════════════════════════════════════
           DESKTOP SECTION (≥ lg)
-          Independent from mobile
           ════════════════════════════════════════════ */}
       <section
         id='home-desktop'
