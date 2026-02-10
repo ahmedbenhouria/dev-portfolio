@@ -53,15 +53,15 @@ export default function Services({
   const titleRef = useRef<HTMLHeadingElement | null>(null)
 
   const isMobile =
-  typeof window !== 'undefined' &&
-  window.matchMedia('(max-width: 768px)').matches
+    typeof window !== 'undefined' &&
+    window.matchMedia('(max-width: 768px)').matches
 
   const topRadius = useTransform(
     scrollYProgress,
     [0.9, 1],
     isMobile ? [16, 0] : [30, 0]
   )
-  
+
   const [expandedId, setExpandedId] = useState<number | null>(null)
   const [hoveredId, setHoveredId] = useState<number | null>(null)
 
@@ -230,8 +230,6 @@ export default function Services({
     }
   }, [])
 
-  
-
   return (
     <section
       ref={ref}
@@ -300,7 +298,7 @@ export default function Services({
                       style={{
                         color: isActive ? '#141516' : '#DDDED7',
                         transform: isActive
-                          ? 'translateX(8px) sm:translateX(12px)'
+                          ? 'translateX(12px)'
                           : 'translateX(2px)'
                       }}
                     >

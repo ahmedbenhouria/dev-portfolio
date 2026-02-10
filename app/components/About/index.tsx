@@ -53,9 +53,10 @@ export default function Index() {
           </h1>
 
           <p className='manrope mt-4 max-w-xs text-sm leading-relaxed font-[500] text-[#DDDED7]/80 sm:mt-6 sm:max-w-md md:mt-8 md:text-base lg:text-[17px]'>
-            I'm a passionate Mobile App Developer with 4+ years of experience
-            building native Android apps with Kotlin and Jetpack Compose, as
-            well as cross-platform apps with Flutter.
+            I’m a passionate Software Developer with 4+ years of experience
+            building mobile and web applications. I specialize in native Android
+            development using Kotlin and Jetpack Compose, cross-platform apps
+            with Flutter, and modern web development solutions.
           </p>
         </div>
 

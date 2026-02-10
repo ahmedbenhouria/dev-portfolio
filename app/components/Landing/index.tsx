@@ -134,10 +134,10 @@ export default function Index({
   const y = useSpring(rawY, springConfig)
 
   const description =
-    'Independent mobile app developer who builds digital experiences that balance clean design, solid architecture, and meaningful interactions. Driven by passion and intention.'
+    'Independent developer who builds digital experiences that balance clean design, solid architecture, and meaningful interactions. Driven by passion and intention.'
 
   const descriptionMobile =
-    'Independent developer who builds digital experiences that balance clean design, solid architecture, and meaningful interactions. Driven by passion and intention.'
+    'Independent software developer building digital experiences that balance clean design, solid architecture, and meaningful user interactions across mobile and web. Driven by passion, intention, and quality.'
 
   useGSAP(() => {
     if (!shouldAnimate) return
@@ -185,13 +185,11 @@ export default function Index({
               {/* Content area */}
               <div className='mt-4 grid flex-shrink-0 grid-cols-[1fr_auto] items-start gap-3 sm:gap-4'>
                 {/* Title + Description */}
-                <div className='space-y-3 sm:space-y-3 md:space-y-4'>
+                <div className='mt-1 space-y-3 sm:space-y-3 md:space-y-4'>
                   <h1 className='title mask manrope text-[21px] leading-tight font-bold tracking-tight text-[#3C3933] sm:text-2xl md:text-3xl'>
-                    Mobile Application
-                    <br />
-                    Developer
+                    Software Developer
                   </h1>
-                  <p className='manrope max-w-[98%] text-[12.5px] leading-4.5 font-[500] text-[#6D6660] sm:text-[14px] md:text-base'>
+                  <p className='manrope max-w-[95%] text-[12.5px] leading-4.5 font-[500] text-[#6D6660] sm:text-[14px] md:text-base'>
                     {descriptionMobile.split(' ').map((word, index) => (
                       <span key={index} className='mask'>
                         <motion.span

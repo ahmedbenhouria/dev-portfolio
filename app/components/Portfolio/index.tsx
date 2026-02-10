@@ -8,73 +8,65 @@ import { SplitText } from 'gsap/all'
 const works = [
   {
     id: 1,
-    title: 'E-Commerce Platform',
-    category: 'Full Stack',
-    description:
-      'A high-performance marketplace serving 50K+ daily users with real-time inventory synchronization and dynamic pricing.',
-    image:
-      'https://images.unsplash.com/photo-1557821552-17105176552c?w=1600&h=1000&fit=crop',
-    tags: ['React', 'Node.js', 'MongoDB'],
-    github: 'https://github.com/yourusername/ecommerce-platform',
-    liveUrl: 'https://demo-ecommerce.com',
-    year: '2024',
-    month: 'January'
-  },
-  {
-    id: 2,
-    title: 'Mobile Fitness App',
+    title: 'LegReader Mobile App',
     category: 'Mobile',
     description:
-      'An intelligent fitness companion with AI-driven workout plans and progress tracking — 100K+ downloads.',
-    image:
-      'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1600&h=1000&fit=crop',
-    tags: ['Flutter', 'Firebase', 'ML'],
-    github: 'https://github.com/yourusername/fitness-app',
-    appStore: 'https://apps.apple.com/app/fitness-tracker',
-    year: '2023',
+      'A high-precision mobile application for contactless leg measurements, leveraging 3D reconstruction to deliver accurate lower-extremity measurements on smartphones and tablets.',
+    image: '/legreader-mobile-app.png',
+    tags: ['Android', 'iOS', 'Augmented Reality'],
+    appStore:
+      'https://apps.apple.com/de/app/legreader-mobile/id1513616959?l=en-GB',
+    year: '2022',
     month: 'September'
   },
   {
-    id: 3,
-    title: 'Design System',
-    category: 'UI/UX',
+    id: 2,
+    title: 'RingPay App',
+    category: 'Mobile',
     description:
-      'A comprehensive design system with 200+ components, ensuring consistency across 15+ products.',
-    image:
-      'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=1600&h=1000&fit=crop',
-    tags: ['Figma', 'React', 'Storybook'],
-    github: 'https://github.com/yourusername/design-system',
-    liveUrl: 'https://design-system-demo.com',
-    year: '2023',
-    month: 'June'
+      'A Fintech App UI Kit that helps you kickstart your mobile financial application with ease. With a collection of responsive, reusable, and modern UI components.',
+    image: '/fintech-app-ui-kit.png',
+    tags: ['Flutter', 'Dart'],
+    github: 'https://github.com/ahmedbenhouria/ringpay-app',
+    year: '2025',
+    month: 'May'
+  },
+  {
+    id: 3,
+    title: 'invome App - WIP',
+    category: 'Mobile',
+    description:
+      'A full-featured mobile application that streamlines invoice management and generation, helping freelancers, small businesses, and consultants easily create invoices, track client payments, and manage billing efficiently.',
+    image: '/invome-app-temp.png',
+    tags: ['Flutter', 'Dart', 'iOS', 'Android'],
+    github: 'https://github.com/ahmedbenhouria/invome-app',
+    year: '2025',
+    month: 'December'
   },
   {
     id: 4,
-    title: 'AI Content Generator',
-    category: 'Machine Learning',
+    title: 'AIKE E-commerce Website',
+    category: 'Web',
     description:
-      'An AI-powered content creation tool generating high-quality marketing copy for 10K+ users.',
-    image:
-      'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1600&h=1000&fit=crop',
-    tags: ['Python', 'TensorFlow', 'FastAPI'],
-    github: 'https://github.com/yourusername/ai-content',
-    liveUrl: 'https://ai-content-demo.com',
+      'A fully responsive e‑commerce website built with modern web technologies, allowing users to browse products, manage carts, complete secure checkout, and track orders.',
+    image: '/aike-ecommerce.webp',
+    tags: ['React', 'Next.js', 'Tailwind CSS', 'Node.js', 'Stripe'],
+    liveUrl: 'https://aike-demo.com',
     year: '2024',
-    month: 'March'
+    month: 'November'
   },
   {
     id: 5,
-    title: 'Dashboard Analytics',
+    title: 'urCrypto Dashboard',
     category: 'Frontend',
     description:
-      'An enterprise analytics platform processing 1M+ events daily with customizable widgets and real-time alerts.',
-    image:
-      'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1600&h=1000&fit=crop',
-    tags: ['Next.js', 'D3.js', 'Tailwind CSS'],
-    github: 'https://github.com/yourusername/analytics-dashboard',
+      'A modern, responsive cryptocurrency dashboard that visualizes real-time data, adapts seamlessly to different screen sizes, and supports both light and dark modes for an optimal user experience.',
+    image: '/urcrypto-dashboard.png',
+    tags: ['React', 'TypeScript', 'Tailwind CSS'],
+    github: 'https://github.com/ahmedbenhouria/urCrypto-dashboard',
     liveUrl: 'https://analytics-demo.com',
-    year: '2024',
-    month: 'November'
+    year: '2025',
+    month: 'January'
   }
 ]
 
