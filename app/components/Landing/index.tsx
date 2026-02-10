@@ -16,9 +16,12 @@ import { SplitText } from 'gsap/all'
 import { useEffect } from 'react'
 import { getCalApi } from '@calcom/embed-react'
 
-const CustomButton = () => {
+const CustomButton = motion.button
+
+const CustomButtonComponent = () => {
   return (
-    <button
+    <CustomButton
+      whileTap={{ scale: 0.96 }}
       data-cal-namespace='project-intro-call'
       data-cal-link='ahmed-ben-houria-h4fkio/project-intro-call'
       data-cal-config='{"layout":"month_view"}'
@@ -42,7 +45,7 @@ const CustomButton = () => {
       </span>
 
       <span className='absolute inset-0 translate-y-full rounded-[50%_50%_0_0] bg-[#6C645D] transition-all duration-500 ease-[cubic-bezier(.4,0,0,1)] group-hover:translate-y-0 group-hover:rounded-none'></span>
-    </button>
+    </CustomButton>
   )
 }
 
@@ -93,10 +96,22 @@ const InstagramIcon = () => (
 )
 
 const socials = [
-  { icon: GitHubIcon, href: '#', label: 'GitHub' },
-  { icon: LinkedInIcon, href: '#', label: 'LinkedIn' },
-  { icon: InstagramIcon, href: '#', label: 'Instagram' },
-  { icon: TwitterIcon, href: '#', label: 'Twitter' }
+  {
+    icon: GitHubIcon,
+    href: 'https://github.com/ahmedbenhouria',
+    label: 'GitHub'
+  },
+  {
+    icon: LinkedInIcon,
+    href: 'https://www.linkedin.com/in/ahmedbenhouria/',
+    label: 'LinkedIn'
+  },
+  {
+    icon: InstagramIcon,
+    href: 'https://www.instagram.com/ahmedbenhouria/',
+    label: 'Instagram'
+  },
+  { icon: TwitterIcon, href: 'https://x.com/ahmedben66', label: 'X' }
 ]
 
 export default function Index({
@@ -156,9 +171,9 @@ export default function Index({
         id='home'
         className='relative z-20 h-[100dvh] overflow-hidden bg-[#DDDED7] selection:text-[#32297A] md:z-10 lg:hidden'
       >
-        <div className='relative z-10 flex h-full flex-col px-6 pt-16 pb-6 sm:px-6 sm:pt-20 sm:pb-8 md:px-12 md:pt-24 md:pb-10'>
-          <motion.div 
-            style={{ scale, opacity, y }} 
+        <div className='relative z-10 flex h-full flex-col px-7 pt-16 pb-6 sm:px-6 sm:pt-20 sm:pb-8 md:px-12 md:pt-24 md:pb-10'>
+          <motion.div
+            style={{ scale, opacity, y }}
             className='mx-auto flex h-full w-full max-w-2xl flex-col'
           >
             <motion.div
@@ -170,13 +185,13 @@ export default function Index({
               {/* Content area */}
               <div className='mt-4 grid flex-shrink-0 grid-cols-[1fr_auto] items-start gap-3 sm:gap-4'>
                 {/* Title + Description */}
-                <div className='mt-1 space-y-3 sm:space-y-3 md:space-y-4'>
+                <div className='space-y-3 sm:space-y-3 md:space-y-4'>
                   <h1 className='title mask manrope text-[21px] leading-tight font-bold tracking-tight text-[#3C3933] sm:text-2xl md:text-3xl'>
                     Mobile Application
                     <br />
                     Developer
                   </h1>
-                  <p className='manrope max-w-[92%] text-[12px] leading-4.5 font-[500] text-[#6D6660] sm:text-[14px] md:text-base'>
+                  <p className='manrope max-w-[98%] text-[12.5px] leading-4.5 font-[500] text-[#6D6660] sm:text-[14px] md:text-base'>
                     {descriptionMobile.split(' ').map((word, index) => (
                       <span key={index} className='mask'>
                         <motion.span
@@ -225,7 +240,7 @@ export default function Index({
               </div>
 
               {/* Image - takes remaining space */}
-              <div className='mt-4 relative min-h-0 flex-1 overflow-hidden rounded-lg sm:rounded-xl'>
+              <div className='relative mt-4 mb-1 min-h-0 flex-1 overflow-hidden rounded-lg sm:rounded-xl'>
                 <motion.div
                   variants={portraitReveal}
                   initial='initial'
@@ -332,12 +347,11 @@ export default function Index({
 
                       {/* Button */}
                       <motion.div
-                        whileTap={{ scale: 0.96 }}
                         initial='initial'
                         animate={!isLoading ? 'open' : 'initial'}
                         variants={fadeInUp}
                       >
-                        <CustomButton />
+                        <CustomButtonComponent />
                       </motion.div>
                     </div>
                     <div>
