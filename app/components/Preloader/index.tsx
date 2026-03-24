@@ -20,20 +20,27 @@ export default function Index() {
   const [dimension, setDimension] = useState({ width: 0, height: 0 })
 
   useEffect(() => {
+    // Set initial dimensions
     setDimension({ width: window.innerWidth, height: window.innerHeight })
   }, [])
 
   useEffect(() => {
-    if (index == words.length - 1) return
-    setTimeout(
+    if (index === words.length - 1) return
+
+    const timer = setTimeout(
       () => {
         setIndex(index + 1)
       },
-      index == 0 ? 1000 : 150
+      index === 0 ? 1000 : 150
     )
+
+    return () => clearTimeout(timer)
   }, [index])
 
-  const initialPath = `M0 0 L${dimension.width} 0 L${dimension.width} ${dimension.height} Q${dimension.width / 2} ${dimension.height + 300} 0 ${dimension.height}  L0 0`
+  // Responsive curve offset - smaller on mobile devices
+  const curveOffset = dimension.width < 768 ? 100 : 300
+  
+  const initialPath = `M0 0 L${dimension.width} 0 L${dimension.width} ${dimension.height} Q${dimension.width / 2} ${dimension.height + curveOffset} 0 ${dimension.height}  L0 0`
   const targetPath = `M0 0 L${dimension.width} 0 L${dimension.width} ${dimension.height} Q${dimension.width / 2} ${dimension.height} 0 ${dimension.height}  L0 0`
 
   const curve = {

@@ -1,9 +1,10 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 import { SplitText } from 'gsap/all'
 import gsap from 'gsap'
 import { AnimatePresence, useScroll } from 'framer-motion'
+import { useGSAP } from '@gsap/react'
 import Lenis from 'lenis'
 import Navbar from '@/components/Header/Navbar'
 import Preloader from './components/Preloader'
@@ -12,20 +13,23 @@ import Services from '@/components/Services'
 import Portfolio from '@/components/Portfolio'
 import About from '@/components/About'
 import Contact from '@/components/Contact'
-import Footer from '@/app/components/Contact'
-
-gsap.registerPlugin(SplitText)
 
 export default function App() {
   const triggerRef = useRef<HTMLDivElement | null>(null)
+  const lenisRef = useRef<Lenis | null>(null)
+  const rafIdRef = useRef<number | null>(null)
 
   const { scrollYProgress } = useScroll({
     target: triggerRef,
     offset: ['start end', 'start start']
   })
   const [isLoading, setIsLoading] = useState(true)
-
   const [minTimeElapsed, setMinTimeElapsed] = useState(false)
+
+  // Register GSAP plugins
+  useGSAP(() => {
+    gsap.registerPlugin(SplitText)
+  })
 
   useEffect(() => {
     // Wait minimum 2 seconds before allowing preloader to hide
@@ -38,38 +42,63 @@ export default function App() {
     return () => clearTimeout(timer)
   }, [])
 
+  // Debounced scroll handler
+  const handleScroll = useCallback(() => {
+    const scrollX = window.scrollX || window.pageXOffset
+    const scrollY = window.scrollY || window.pageYOffset
+
+    // Hide preloader only when we've reached 0,0 AND min time has passed
+    if (scrollX === 0 && scrollY === 0) {
+      setIsLoading(false)
+    }
+  }, [])
+
   useEffect(() => {
     // Only start tracking scroll after minimum time has elapsed
     if (!minTimeElapsed) return
 
-    const handleScroll = () => {
-      const scrollX = window.scrollX || window.pageXOffset
-      const scrollY = window.scrollY || window.pageYOffset
+    let debounceTimer: NodeJS.Timeout | null = null
 
-      // Hide preloader only when we've reached 0,0 AND min time has passed
-      if (scrollX === 0 && scrollY === 0) {
-        setIsLoading(false)
-      }
+    const debouncedScroll = () => {
+      if (debounceTimer) clearTimeout(debounceTimer)
+      debounceTimer = setTimeout(() => {
+        handleScroll()
+      }, 100) // Debounce scroll checks to 100ms
     }
 
     // Add scroll listener
-    window.addEventListener('scroll', handleScroll)
+    window.addEventListener('scroll', debouncedScroll, { passive: true })
 
     // Check initial position immediately
     handleScroll()
 
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [minTimeElapsed])
+    return () => {
+      window.removeEventListener('scroll', debouncedScroll)
+      if (debounceTimer) clearTimeout(debounceTimer)
+    }
+  }, [minTimeElapsed, handleScroll])
 
+  // Initialize Lenis with proper cleanup
   useEffect(() => {
-    const lenis = new Lenis()
+    const lenis = new Lenis({
+      lerp: 0.1,
+      smoothWheel: true
+    })
+    lenisRef.current = lenis
 
-    function raf(time: any) {
+    function raf(time: number) {
       lenis.raf(time)
-      requestAnimationFrame(raf)
+      rafIdRef.current = requestAnimationFrame(raf)
     }
 
-    requestAnimationFrame(raf)
+    rafIdRef.current = requestAnimationFrame(raf)
+
+    return () => {
+      if (rafIdRef.current !== null) {
+        cancelAnimationFrame(rafIdRef.current)
+      }
+      lenis.destroy()
+    }
   }, [])
 
   return (

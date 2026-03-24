@@ -35,6 +35,9 @@
 
     /* Mobile optimization */
     @media (max-width: 768px) {
+        svg{
+            height: calc(100% + 100px);
+        }
         p{
             font-size: 28px;
             span{
@@ -46,6 +49,9 @@
     }
 
     @media (max-width: 480px) {
+        svg{
+            height: calc(100% + 80px);
+        }
         p{
             font-size: 20px;
             span{
